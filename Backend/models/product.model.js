@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 
 class Product {
-  static async getAll(page = 1, limit = 10, filters = {}) {
+  static async getAll(page = 1, limit = 10, filters = {}, userId = null) {
     const offset = (page - 1) * limit;
     let query = 'SELECT * FROM products';
     const queryParams = [];
@@ -11,6 +11,13 @@ class Product {
     
     // Build WHERE clause based on filters
     const whereConditions = [];
+    
+    // Filter by user_id if provided
+    if (userId) {
+      whereConditions.push(`user_id = $${paramCount}`);
+      queryParams.push(userId);
+      paramCount++;
+    }
     
     if (filters.search) {
       whereConditions.push(`(name ILIKE $${paramCount} OR $${paramCount} = ANY(tags))`);
@@ -73,15 +80,15 @@ class Product {
   }
   
   static async create(productData) {
-    const { name, category, price, tags, imageUrl } = productData;
+    const { name, category, price, tags, imageUrl, userId } = productData;
     
     const query = `
-      INSERT INTO products (name, category, price, tags, image_url)
-      VALUES ($1, $2, $3, $4, $5)
+      INSERT INTO products (name, category, price, tags, image_url, user_id)
+      VALUES ($1, $2, $3, $4, $5, $6)
       RETURNING *
     `;
     
-    const result = await db.query(query, [name, category, price, tags, imageUrl]);
+    const result = await db.query(query, [name, category, price, tags, imageUrl, userId]);
     return result.rows[0];
   }
   

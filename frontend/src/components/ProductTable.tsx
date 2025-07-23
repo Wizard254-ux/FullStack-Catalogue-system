@@ -42,6 +42,9 @@ const ProductTable: React.FC<ProductTableProps> = ({ products, onEdit, onDelete 
       <table className="min-w-full divide-y divide-gray-200">
         <thead className="bg-gray-50">
           <tr>
+             <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              No
+            </th>
 
             <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
               Name
@@ -61,8 +64,11 @@ const ProductTable: React.FC<ProductTableProps> = ({ products, onEdit, onDelete 
           </tr>
         </thead>
         <tbody className="bg-white divide-y divide-gray-200">
-          {products.map((product) => (
+          {products.map((product,index : number) => (
             <tr key={product.id} className="hover:bg-gray-50">
+               <td className="px-6 py-4 whitespace-nowrap">
+                <span className="text-sm text-gray-900">{index+1}</span>
+              </td>
 
               <td className="px-6 py-4 whitespace-nowrap">
                 <div className="text-sm font-medium text-gray-900">{product.name}</div>
@@ -156,19 +162,21 @@ const ProductTable: React.FC<ProductTableProps> = ({ products, onEdit, onDelete 
                   </button>
                 </div>
                 
-                <div className="flex flex-col sm:flex-row gap-4">
-                  <div className="sm:w-1/3">
+                <div className="flex flex-col gap-6">
+                  {/* Image section - full width */}
+                  <div className="w-full bg-gray-50 p-4 rounded-lg border border-gray-200 flex justify-center">
                     <img
                       src={getFullImageUrl(viewProduct.image_url, true)}
                       alt={viewProduct.name}
-                      className="w-full h-auto object-cover rounded"
+                      className="max-w-full h-auto max-h-80 object-contain"
                       onError={(e) => {
                         (e.target as HTMLImageElement).src = placeholderImage;
                       }}
                     />
                   </div>
                   
-                  <div className="sm:w-2/3">
+                  {/* Product details section */}
+                  <div className="w-full">
                     <h4 className="text-xl font-semibold">{viewProduct.name}</h4>
                     <p className="text-blue-600 font-medium mt-2">{formatPrice(viewProduct.price)}</p>
                     

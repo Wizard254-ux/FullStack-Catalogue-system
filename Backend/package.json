@@ -7,7 +7,8 @@
     "start": "node index.js",
     "dev": "nodemon index.js",
     "init-db": "node config/init-db.js",
-    "migrate-categories": "node config/migrate-categories.js"
+    "migrate-categories": "node config/migrate-categories.js",
+    "update-schema": "node config/run-update-schema.js"
   },
   "keywords": [],
   "author": "",

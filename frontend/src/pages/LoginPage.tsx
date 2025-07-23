@@ -111,18 +111,18 @@ const LoginPage: React.FC = () => {
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-slate-700 mb-2">
-                Username
+                Email Address
               </label>
               <input
                 id="email"
                 name="email"
-                type="text"
+                type="email"
                 autoComplete="email"
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-all duration-200 bg-slate-50"
-                placeholder="Enter your staff ID or email"
+                placeholder="Enter your email address"
               />
             </div>
 

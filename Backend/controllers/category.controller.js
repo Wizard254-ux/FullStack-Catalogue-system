@@ -2,7 +2,10 @@ const Category = require('../models/category.model');
 
 const getAllCategories = async (req, res) => {
   try {
-    const categories = await Category.getAll();
+    // Get user ID from the authenticated request
+    const userId = req.user ? req.user.id : null;
+    
+    const categories = await Category.getAll(userId);
     res.status(200).json(categories);
   } catch (error) {
     console.error('Error fetching categories:', error);
@@ -18,7 +21,10 @@ const createCategory = async (req, res) => {
       return res.status(400).json({ message: 'Category name is required' });
     }
     
-    const category = await Category.create(name);
+    // Get user ID from the authenticated request
+    const userId = req.user.id;
+    
+    const category = await Category.create(name, userId);
     
     res.status(201).json({
       message: 'Category created successfully',

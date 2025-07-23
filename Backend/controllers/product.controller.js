@@ -13,7 +13,10 @@ const getAllProducts = async (req, res) => {
       maxPrice: req.query.maxPrice ? parseFloat(req.query.maxPrice) : null
     };
     
-    const result = await Product.getAll(page, limit, filters);
+    // Get user ID from the authenticated request
+    const userId = req.user ? req.user.id : null;
+    
+    const result = await Product.getAll(page, limit, filters, userId);
     
     res.status(200).json(result);
   } catch (error) {
@@ -29,6 +32,11 @@ const getProductById = async (req, res) => {
     
     if (!product) {
       return res.status(404).json({ message: 'Product not found' });
+    }
+    
+    // Check if the product belongs to the authenticated user
+    if (product.user_id !== req.user.id) {
+      return res.status(403).json({ message: 'You do not have permission to view this product' });
     }
     
     res.status(200).json(product);
@@ -70,7 +78,8 @@ const createProduct = async (req, res) => {
       category,
       price: parseFloat(price),
       tags,
-      imageUrl
+      imageUrl,
+      userId: req.user.id // Add user ID from authenticated request
     };
     
     const newProduct = await Product.create(productData);
@@ -95,6 +104,11 @@ const updateProduct = async (req, res) => {
     const existingProduct = await Product.getById(productId);
     if (!existingProduct) {
       return res.status(404).json({ message: 'Product not found' });
+    }
+    
+    // Check if the product belongs to the authenticated user
+    if (existingProduct.user_id !== req.user.id) {
+      return res.status(403).json({ message: 'You do not have permission to update this product' });
     }
     
     // Convert tags to array if it's a string
@@ -143,6 +157,17 @@ const updateProduct = async (req, res) => {
 const deleteProduct = async (req, res) => {
   try {
     const productId = req.params.id;
+    
+    // Get existing product first to check ownership
+    const existingProduct = await Product.getById(productId);
+    if (!existingProduct) {
+      return res.status(404).json({ message: 'Product not found' });
+    }
+    
+    // Check if the product belongs to the authenticated user
+    if (existingProduct.user_id !== req.user.id) {
+      return res.status(403).json({ message: 'You do not have permission to delete this product' });
+    }
     
     const result = await Product.delete(productId);
     
