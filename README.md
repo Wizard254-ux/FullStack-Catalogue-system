@@ -4,11 +4,13 @@ A complete product catalog management system with image upload functionality, bu
 
 ## Features
 
-- User authentication with JWT
-- Product management (CRUD operations)
-- Image upload and management
-- Filtering, pagination, and search
-- Responsive design
+- **User Authentication**: Secure login and registration with JWT
+- **User-Specific Data**: Users can only see and manage their own products and categories
+- **Product Management**: Full CRUD operations for products
+- **Image Upload**: Upload and manage product images
+- **Category Management**: Create and manage product categories
+- **Filtering & Search**: Filter products by category, price range, and search terms
+- **Responsive Design**: Works on desktop and mobile devices
 
 ## Tech Stack
 
@@ -40,20 +42,22 @@ FullStack Catalogue Management System/
 │   ├── index.js            # Entry point
 │   └── package.json        # Dependencies
 │
-└── frontend/               # React frontend
-    ├── public/             # Static files
-    ├── src/
-    │   ├── components/     # Reusable components
-    │   ├── contexts/       # React contexts
-    │   ├── hooks/          # Custom hooks
-    │   ├── pages/          # Page components
-    │   ├── services/       # API services
-    │   ├── types/          # TypeScript types
-    │   ├── utils/          # Utility functions
-    │   ├── App.tsx         # Main App component
-    │   └── main.tsx        # Entry point
-    ├── .env                # Environment variables
-    └── package.json        # Dependencies
+├── frontend/               # React frontend
+│   ├── public/             # Static files
+│   ├── src/
+│   │   ├── components/     # Reusable components
+│   │   ├── contexts/       # React contexts
+│   │   ├── hooks/          # Custom hooks
+│   │   ├── pages/          # Page components
+│   │   ├── services/       # API services
+│   │   ├── types/          # TypeScript types
+│   │   ├── utils/          # Utility functions
+│   │   ├── App.tsx         # Main App component
+│   │   └── main.tsx        # Entry point
+│   ├── .env                # Environment variables
+│   └── package.json        # Dependencies
+│
+└── postman_collection.json # Postman API collection
 ```
 
 ## Setup Instructions
@@ -69,14 +73,6 @@ CREATE DATABASE product_catalog;
 ```
 
 2. Make sure your `.env` file has the correct database credentials.
-
-3. Run the initialization script to create the required tables:
-```
-cd Backend
-npm run init-db
-```
-
-This will create the necessary `users` and `products` tables in your database.
 
 ### Backend Setup
 1. Navigate to the backend directory:
@@ -102,7 +98,12 @@ JWT_EXPIRES_IN=24h
 UPLOAD_PATH=uploads
 ```
 
-4. Start the backend server:
+4. Run the setup script to initialize the database:
+```
+npm run setup
+```
+
+5. Start the backend server:
 ```
 npm run dev
 ```
@@ -139,10 +140,32 @@ npm run dev
 ### Products
 - `GET /api/products` - Get all products (with filtering, pagination, search)
 - `GET /api/products/:id` - Get product by ID
-- `POST /api/products` - Create new product with image upload (protected)
-- `PUT /api/products/:id` - Update product with optional new image (protected)
-- `DELETE /api/products/:id` - Delete product (protected)
+- `POST /api/products` - Create new product with image upload
+- `PUT /api/products/:id` - Update product with optional new image
+- `DELETE /api/products/:id` - Delete product
 
-### Image Upload
-- `POST /api/upload` - Upload image (protected)
-- `GET /api/images/:filename` - Serve uploaded images"# FullStack-Catalogue-system" 
+### Categories
+- `GET /api/categories` - Get all categories
+- `POST /api/categories` - Create new category
+
+## User-Specific Data
+
+This system implements user-specific data isolation:
+
+- Each user can only see and manage their own products and categories
+- Authentication is required for all API endpoints
+- Products and categories are linked to users via a `user_id` foreign key
+
+## Testing with Postman
+
+A Postman collection is included in the root directory (`postman_collection.json`). To use it:
+
+1. Import the collection into Postman
+2. Register a new user or login with an existing user
+3. Copy the JWT token from the response
+4. Update the collection variable `token` with your JWT token
+5. Use the collection to test all API endpoints
+
+## License
+
+This project is licensed under the MIT License.

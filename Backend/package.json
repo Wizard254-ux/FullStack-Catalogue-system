@@ -6,10 +6,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js",
     "dev": "nodemon index.js",
-    "init-db": "node config/init-db.js",
-    "migrate-categories": "node config/migrate-categories.js",
-    "update-schema": "node config/run-update-schema.js",
-    "reset-user-data": "node config/run-reset-user-data.js"
+    "setup": "node config/setup.js"
   },
   "keywords": [],
   "author": "",
