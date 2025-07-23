@@ -1,0 +1,25 @@
+const express = require('express');
+const router = express.Router();
+const productController = require('../controllers/product.controller');
+const { verifyToken } = require('../middlewares/auth.middleware');
+const upload = require('../middlewares/upload.middleware');
+
+// Get all products (with filtering, pagination, search)
+router.get('/', productController.getAllProducts);
+
+// Get product by ID
+router.get('/:id', productController.getProductById);
+
+// Protected routes
+router.use(verifyToken);
+
+// Create new product with image upload
+router.post('/', upload.single('image'), productController.createProduct);
+
+// Update product with optional new image
+router.put('/:id', upload.single('image'), productController.updateProduct);
+
+// Delete product
+router.delete('/:id', productController.deleteProduct);
+
+module.exports = router;
