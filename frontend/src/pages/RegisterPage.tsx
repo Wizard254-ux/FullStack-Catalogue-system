@@ -12,7 +12,7 @@ const RegisterPage: React.FC = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [agreeToTerms, setAgreeToTerms] = useState(false);
+  const [agreeToTerms, _setAgreeToTerms] = useState(false);
 
   const { register } = useAuth();
   const navigate = useNavigate();

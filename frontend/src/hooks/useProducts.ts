@@ -103,6 +103,9 @@ export const useProducts = ({ initialPage = 1, initialLimit = 10 }: UseProductsP
       
       if (formData.image) {
         data.append('image', formData.image);
+      } else {
+        // Explicitly set removeImage flag if image is null
+        data.append('removeImage', 'true');
       }
       
       await productService.updateProduct(id, data);

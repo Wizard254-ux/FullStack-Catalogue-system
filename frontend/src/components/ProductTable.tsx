@@ -159,7 +159,7 @@ const ProductTable: React.FC<ProductTableProps> = ({ products, onEdit, onDelete 
                 <div className="flex flex-col sm:flex-row gap-4">
                   <div className="sm:w-1/3">
                     <img
-                      src={getFullImageUrl(viewProduct.image_url)}
+                      src={getFullImageUrl(viewProduct.image_url, true)}
                       alt={viewProduct.name}
                       className="w-full h-auto object-cover rounded"
                       onError={(e) => {

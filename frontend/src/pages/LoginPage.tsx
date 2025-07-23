@@ -9,7 +9,6 @@ const LoginPage: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [rememberMe, setRememberMe] = useState(false);
 
   const { login } = useAuth();
   const navigate = useNavigate();
@@ -28,9 +27,14 @@ const LoginPage: React.FC = () => {
 
       await login(email, password);
       navigate('/dashboard');
-    } catch (err: any) {
-      setError(err.response?.data?.message || 'Login failed. Please try again.');
-    } finally {
+    } catch (err: unknown) {
+  if (err && typeof err === 'object' && 'response' in err) {
+          const axiosErr = err as { response?: { data?: { message?: string } } };
+          setError(axiosErr.response?.data?.message || 'Login failed. Please try again.');
+        } else {
+          setError('Login failed. Please try again.');
+        }
+      }finally {
       setIsLoading(false);
     }
   };

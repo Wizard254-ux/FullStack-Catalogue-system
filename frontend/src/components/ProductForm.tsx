@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useForm } from 'react-hook-form';
 import type {Product, ProductFormData} from '../types';
 import ImageUpload from './ImageUpload';
@@ -41,10 +41,10 @@ const ProductForm: React.FC<ProductFormProps> = ({
     
     console.log('Submitting form with data:', data);
     
-    onSubmit({
+      onSubmit({
       ...data,
       tags: processedTags.join(','), // Ensure tags are sent as a comma-separated string
-      image: imageFile,
+       image: imageFile ?? undefined,
     });
   };
   

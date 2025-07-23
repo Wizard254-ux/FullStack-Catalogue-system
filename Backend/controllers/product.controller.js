@@ -108,10 +108,16 @@ const updateProduct = async (req, res) => {
       }
     }
     
-    // Get image URL if file was uploaded, otherwise keep existing
+    // Handle image URL
     let imageUrl = existingProduct.image_url;
+    
+    // If a new file was uploaded, use that
     if (req.file) {
       imageUrl = `/api/images/${req.file.filename}`;
+    } 
+    // If removeImage flag is set, remove the image
+    else if (req.body.removeImage === 'true') {
+      imageUrl = null;
     }
     
     const productData = {
